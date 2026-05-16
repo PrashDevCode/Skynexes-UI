@@ -4,10 +4,42 @@ import { motion } from "framer-motion";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError('');
+
+    const form = e.currentTarget;
+    const formData = {
+      name: (form.elements.namedItem('name') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      company: (form.elements.namedItem('company') as HTMLInputElement).value,
+      projectType: (form.elements.namedItem('projectType') as HTMLSelectElement).value,
+      budget: (form.elements.namedItem('budget') as HTMLSelectElement).value,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError(data.message || 'Something went wrong');
+      }
+    } catch (err) {
+      setError('Failed to submit. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +89,7 @@ export default function Contact() {
                       <label className="text-sm text-slate-400 mb-1 block">Full Name</label>
                       <input
                         type="text"
+                        name="name"
                         required
                         placeholder="John Doe"
                         className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition"
@@ -66,6 +99,7 @@ export default function Contact() {
                       <label className="text-sm text-slate-400 mb-1 block">Email Address</label>
                       <input
                         type="email"
+                        name="email"
                         required
                         placeholder="john@company.com"
                         className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition"
@@ -76,13 +110,17 @@ export default function Contact() {
                     <label className="text-sm text-slate-400 mb-1 block">Company (Optional)</label>
                     <input
                       type="text"
+                      name="company"
                       placeholder="Your Company"
                       className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition"
                     />
                   </div>
                   <div>
                     <label className="text-sm text-slate-400 mb-1 block">Project Type</label>
-                    <select className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition">
+                    <select
+                      name="projectType"
+                      className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition"
+                    >
                       <option>Select a service</option>
                       <option>Custom Software Development</option>
                       <option>Web & App Development</option>
@@ -94,7 +132,10 @@ export default function Contact() {
                   </div>
                   <div>
                     <label className="text-sm text-slate-400 mb-1 block">Budget Range</label>
-                    <select className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition">
+                    <select
+                      name="budget"
+                      className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition"
+                    >
                       <option>Select budget range</option>
                       <option>Under $5,000</option>
                       <option>$5,000 - $15,000</option>
@@ -105,17 +146,24 @@ export default function Contact() {
                   <div>
                     <label className="text-sm text-slate-400 mb-1 block">Project Description</label>
                     <textarea
+                      name="message"
                       rows={5}
                       required
                       placeholder="Tell us about your project, goals, and timeline..."
                       className="w-full bg-primary border border-slate-700 p-3 rounded-md text-sm focus:outline-none focus:border-secondary transition resize-none"
                     />
                   </div>
+                  {error && (
+                    <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 px-4 py-2 rounded-md">
+                      ❌ {error}
+                    </p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full bg-secondary text-black py-3 rounded-md font-semibold hover:bg-accent transition"
+                    disabled={loading}
+                    className="w-full bg-secondary text-black py-3 rounded-md font-semibold hover:bg-accent transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Request →
+                    {loading ? 'Sending...' : 'Send Request →'}
                   </button>
                 </form>
               )}
