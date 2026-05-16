@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import KeepAlive from "../components/KeepAlive";
 
 export const metadata: Metadata = {
   title: "SkyNexes",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="pt-16">
+        <KeepAlive />
         <Navbar />
         {children}
         <Footer />
