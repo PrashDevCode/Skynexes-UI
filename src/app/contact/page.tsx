@@ -199,8 +199,8 @@ export default function Contact() {
               <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
                 <h3 className="font-semibold mb-4">Contact Details</h3>
                 <div className="space-y-3 text-sm text-slate-400">
-                  <p>📧 <span className="text-white">hello@skynexes.com</span></p>
-                  <p>📍 <span className="text-white">Indore, Madhya Pradesh, India</span></p>
+                  <p>📧 <span className="text-white">skynexes.consultancy@gmail.com</span></p>
+                  <p>📍 <span className="text-white">Bhopal, Madhya Pradesh, India</span></p>
                   <p>🕐 <span className="text-white">Mon–Sat, 9AM–7PM IST</span></p>
                 </div>
               </div>

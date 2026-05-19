@@ -5,8 +5,8 @@ import Footer from "../components/Footer";
 import KeepAlive from "../components/KeepAlive";
 
 export const metadata: Metadata = {
-  title: "SkyNexes",
-  description: "SkyNexes - Your Vision, Our Code",
+  title: "Skynexes",
+  description: "Skynexes - Your Vision, Our Code",
 };
 
 export default function RootLayout({

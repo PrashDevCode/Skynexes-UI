@@ -13,7 +13,7 @@ const values = [
 
 const team = [
   { name: "Prashant Kr. Singh", role: "Founder & CEO", init: "PS" },
-  { name: "Sakshi Bharti", role: "Co-Founder", init: "SB" },
+  // { name: "Sakshi Bharti", role: "Co-Founder", init: "SB" },
   // { name: "Rahul Verma", role: "Lead Engineer", init: "RV" },
   // { name: "Sara Khan", role: "Product Designer", init: "SK" },
 ];
